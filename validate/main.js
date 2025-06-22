@@ -2,8 +2,45 @@
 function Validator(option){
       
       const form = document.querySelector(option.form)
-      form.addEventListener('click',function(e){
+      
+      const button = form.querySelector(".footer button");
+      let obj = {};
+
+      button.addEventListener('click',function(e){
             e.preventDefault();
+            const input = document.querySelectorAll(".form_group input")
+            
+            input.forEach((cur,index) => {
+                  if(cur.value === ''){
+                              const form_group = cur.parentNode;
+                              let span = form_group.querySelector(".message");
+                              span.textContent = "Vui long nhap thong tin";
+                              span.style.display = 'block';
+                              form_group.appendChild(span)
+                        
+                  }
+                  else if(cur.classList.contains("confirmpassword")){
+                       let passwordValue = document.querySelector("#password").value;
+                       if(passwordValue !== cur.value){
+                              const form_group = cur.parentNode;
+                              let span = form_group.querySelector(".message");
+                              span.textContent = "Khong khop mat khau";
+                              span.style.display = 'block';
+                              form_group.appendChild(span);
+                              obj["confirm"] = false;
+                       }else{
+                              obj["confirm"] = true;
+                       }
+                  }
+                  else{
+                        console.log(cur.value)
+                        console.log(cur.id)
+                        obj[cur.id] = cur.value;
+                  }
+            })
+
+            console.log(obj)
+
       })
 
       option.rules.forEach((cur,index) => {
@@ -21,7 +58,7 @@ function Validator(option){
                         console.log("Nhap thanh cong : " + confirmValue);
                         }
                         else{
-                        input.value = '';
+                        // input.value = '';
                         let form_input = e.target.parentNode;
                         let span = form_input.querySelector(".message");
                         span.textContent = confirmValue;
